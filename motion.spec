@@ -1,8 +1,8 @@
 #
 # Conditional builds:
-# with_pgsql		# support for PostgreSQL
-# with_mysql		# support for MySQL
-# with_xmlrpc		# support for 
+%bcond_without	pgsql		# build PostgreSQL support
+%bcond_without	mysql		# build MySQL support
+%bcond_without	xmlrpc		# build XMLRPC support 
 # 
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
@@ -11,7 +11,7 @@ Version:	3.1.19
 Release:	0.1
 Group:		Applications/Graphics
 License:	GPL
-Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
 # Source0-md5:	cff1c8c56eb6b6ef8a5928780ca79cfa
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
@@ -43,22 +43,22 @@ tylko interesuj±ce obrazy.
 %{__aclocal}
 %{__autoconf}
 %configure \
-	--with-libavcodec=%{_libdir}	\
-	--without-optimizecpu			\
-	%{?with_mysql:--with-mysql}		\
-	%{?with_pgsql:--with-pgsql}		
-	
+	--with-libavcodec=%{_libdir} \
+	--without-optimizecpu \
+	%{?with_mysql:--with-mysql} \
+	%{?with_pgsql:--with-pgsql}
+
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{{%{_datadir},%{_examplesdir}}/%{name},%{_sysconfdir}}
+install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}}
 install motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf 
-cp {motion-dist.conf,thread*,motion.init-RH}	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
+cp {motion-dist.conf,thread*,motion.init-RH}	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 %makeinstall
 
-mv $RPM_BUILD_ROOT%{_datadir}/doc/ doc
+mv $RPM_BUILD_ROOT%{_datadir}/doc doc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -68,7 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html
 %attr(755,root,root) %{_bindir}/motion
 %attr(755,root,root) %{_bindir}/motion-control
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/motion.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion.conf
 %{_datadir}/motion
 %{_mandir}/man1/*
-%{_examplesdir}/%{name}
+%{_examplesdir}/%{name}-%{version}
