@@ -7,7 +7,7 @@ Group:		Applications/Graphics
 License:	GPL
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 # Source0-md5:	72beb2940d0edddd0d6856531c93c258
-URL:		http://motion.sourceforge.net/
+URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
