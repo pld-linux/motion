@@ -1,14 +1,12 @@
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.0.7
-Release:	2
+Version:	3.1.16
+Release:	1
 Group:		Applications/Graphics
 License:	GPL
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-# Source0-md5:	9106702dfce0f71977038f4b239a17b5
-Patch0:		%{name}-wrongincludepath.patch.bz2
-Patch1:		%{name}-ffmpeg.patch
+# Source0-md5:	72beb2940d0edddd0d6856531c93c258
 URL:		http://motion.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -33,8 +31,6 @@ tylko interesuj±ce obrazy.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__aclocal}
@@ -46,20 +42,19 @@ chmod 755 configure
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}
 
-cp motion_guide.htm motion_guide.html
 %makeinstall
 
-mv $RPM_BUILD_ROOT%{_prefix}/doc/%{name}-%{version} doc
-mv $RPM_BUILD_ROOT%{_prefix}/examples/%{name}-%{version} $RPM_BUILD_ROOT%{_datadir}/%{name}
+mv $RPM_BUILD_ROOT%{_datadir}/doc/ doc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG CREDITS FAQ README README.axis_2100 mask.pgm  motion_guide.html
+%doc CHANGELOG CREDITS FAQ README README.axis_2100 mask.pgm motion_guide.html
 %attr(755,root,root) %{_bindir}/motion
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/motion.conf
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/motion-dist.conf
 %{_datadir}/motion
-%{_mandir}/man1/motion.1*
+%{_mandir}/man1/*
