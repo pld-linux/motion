@@ -1,3 +1,9 @@
+#
+# Conditional builds:
+# with_pgsql		# support for PostgreSQL
+# with_mysql		# support for MySQL
+# with_xmlrpc		# support for 
+# 
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
@@ -13,8 +19,9 @@ BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	ffmpeg-devel >= 0.4.8
 BuildRequires:	libjpeg-devel
-BuildRequires:	mysql-devel
-BuildRequires:	postgresql-devel
+%{?with_mysql:BuildRequires:    mysql-devel}
+%{?with_pgsql:BuildRequires:	postgresql-devel}
+%{?with_xmlrpc:BuildRequires:	xmlrpc-c-devel}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -35,14 +42,19 @@ tylko interesuj±ce obrazy.
 %build
 %{__aclocal}
 %{__autoconf}
-chmod 755 configure
 %configure \
-	--with-libavcodec=%{_libdir}
+	--with-libavcodec=%{_libdir}	\
+	--without-optimizecpu			\
+	%{?with_mysql:--with-mysql}		\
+	%{?with_pgsql:--with-pgsql}		
+	
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}
+install -d $RPM_BUILD_ROOT{{%{_datadir},%{_examplesdir}}/%{name},%{_sysconfdir}}
+install motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf 
+cp {motion-dist.conf,thread*,motion.init-RH}	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
 
 %makeinstall
 
@@ -55,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html
 %attr(755,root,root) %{_bindir}/motion
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/motion-dist.conf
+%attr(755,root,root) %{_bindir}/motion-control
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/motion.conf
 %{_datadir}/motion
 %{_mandir}/man1/*
+%{_examplesdir}/%{name}
