@@ -9,7 +9,7 @@ Source0:	http://motion.sourceforge.net/download/%{name}-%{version}.tar.gz
 # Source0-md5:	aa1ce10036ef34b1bd3c42d37831b54b
 Patch0:		%{name}-wrongincludepath.patch.bz2
 Patch1:		%{name}-ffmpeg.patch
-URL:		http://motion.technolust.cx/
+URL:		http://motion.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	curl-devel
 BuildRequires:	ffmpeg-devel
