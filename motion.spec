@@ -14,7 +14,9 @@ URL:		http://motion.technolust.cx/
 BuildRequires:  libjpeg-devel
 BuildRequires:  ffmpeg-devel
 BuildRequires:  mysql-devel
+BuildRequires:	postgresql-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Patch0:		motion-wrongincludepath.patch.bz2 
 
 %description
 Motion is a software motion detector. It grabs images from video4linux
@@ -24,10 +26,12 @@ those images that are interesting.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
+%{__autoconf}
 %configure
-%make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
