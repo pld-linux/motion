@@ -6,6 +6,7 @@ Release:	0.1
 Group:		Applications/Graphics
 License:	GPL
 Source0:	http://motion.sourceforge.net/download/%{name}-%{version}.tar.bz2
+# Source0-md5:	3c1d19f456468fb310282e6c41454895
 Patch0:		%{name}-wrongincludepath.patch.bz2 
 URL:		http://motion.technolust.cx/
 BuildRequires:	autoconf
