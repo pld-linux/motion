@@ -2,7 +2,7 @@ Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.1.17
-Release:	1
+Release:	2
 Group:		Applications/Graphics
 License:	GPL
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
