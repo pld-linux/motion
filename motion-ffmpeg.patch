@@ -1,0 +1,63 @@
+diff -urN motion-3.0.6.org/configure.in motion-3.0.6/configure.in
+--- motion-3.0.6.org/configure.in	2003-06-10 10:35:18.000000000 +0200
++++ motion-3.0.6/configure.in	2003-06-10 10:40:46.000000000 +0200
+@@ -43,12 +43,11 @@
+   dnl AUTODETECT ??? SHARED LIB ?????
+   AC_MSG_RESULT(not specified)
+ else
+-  if test -f ${LIBAVCODEC}/libavcodec.a; then
++  if test -f ${LIBAVCODEC}/libavcodec.so; then
+     AC_MSG_RESULT(found)
+-    CFLAGS="-I${LIBAVCODEC} ${CFLAGS}"
++    CFLAGS="-I/usr/include/ffmpeg ${CFLAGS}"
+     CFLAGS="${CFLAGS} -DHAVE_FFMPEG"
+-#    LIBS="$LIBS -L${LIBAVCODEC} -lavcodec -lm"
+-    LIBS="$LIBS ${LIBAVCODEC}/libavcodec.a -lm"
++    LIBS="$LIBS -L${LIBAVCODEC} -lavcodec -lm"
+   else
+     AC_MSG_RESULT(not found)
+   fi
+diff -urN motion-3.0.6.org/ffmpeg.c motion-3.0.6/ffmpeg.c
+--- motion-3.0.6.org/ffmpeg.c	2003-06-10 10:35:18.000000000 +0200
++++ motion-3.0.6/ffmpeg.c	2003-06-10 10:43:22.000000000 +0200
+@@ -16,6 +16,10 @@
+ 
+ #include "ffmpeg.h"
+ 
++#ifndef DEFAULT_FRAME_RATE_BASE
++#define DEFAULT_FRAME_RATE_BASE FRAME_RATE_BASE
++#endif
++
+ void ffmpeg_init(void)
+ {
+ 	avcodec_init();
+@@ -55,7 +59,7 @@
+ 	c->height = height;
+ 
+ 	/* frames per second */
+-	c->frame_rate = rate * FRAME_RATE_BASE;  /* default rate is only 5 frames per second */
++	c->frame_rate = rate * DEFAULT_FRAME_RATE_BASE;  /* default rate is only 5 frames per second */
+ 	c->gop_size = 10; /* emit one intra frame every ten frames */
+ //	c->qmin = 3;
+ //	c->max_qdiff = 3;
+@@ -78,7 +82,7 @@
+ 	/* alloc image and output buffer */
+ 
+ 	ffmpeg->outbuf_size = width * height * 10; // large outbuf_buf
+-	if ((ffmpeg->outbuf = (UINT8*) malloc(ffmpeg->outbuf_size)) == NULL) return NULL;
++	if ((ffmpeg->outbuf = (uint8_t*) malloc(ffmpeg->outbuf_size)) == NULL) return NULL;
+ 
+ 	ffmpeg->picture->data[0] = y;
+ 	ffmpeg->picture->data[1] = u;
+diff -urN motion-3.0.6.org/ffmpeg.h motion-3.0.6/ffmpeg.h
+--- motion-3.0.6.org/ffmpeg.h	2003-06-10 10:35:18.000000000 +0200
++++ motion-3.0.6/ffmpeg.h	2003-06-10 10:38:08.000000000 +0200
+@@ -11,7 +11,7 @@
+ 	AVFrame *picture;
+ 	int outbuf_size;
+ 	FILE *f;
+-	UINT8 *outbuf;
++	uint8_t *outbuf;
+ 	void *udata;
+ #else
+ 	int dummy;
