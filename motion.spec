@@ -39,7 +39,7 @@ tylko interesuj±ce obrazy.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-#%makeinstall
+%makeinstall
 
 mv $RPM_BUILD_ROOT%{_prefix}/doc/%{name}-%{version} doc
 mv $RPM_BUILD_ROOT%{_prefix}/examples/%{name}-%{version} $RPM_BUILD_ROOT%{_datadir}/%{name}
@@ -49,7 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG COPYING CREDITS FAQ README README.axis_2100 mask.pgm  motion_guide.html
+%doc CHANGELOG CREDITS FAQ README README.axis_2100 mask.pgm  motion_guide.html
 %attr(755,root,root) %{_bindir}/motion
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/motion.conf
 %{_datadir}/motion
