@@ -12,9 +12,9 @@ Patch1:		%{name}-ffmpeg.patch
 URL:		http://motion.technolust.cx/
 BuildRequires:	autoconf
 BuildRequires:	curl-devel
-BuildRequires:  ffmpeg-devel
-BuildRequires:  libjpeg-devel
-BuildRequires:  mysql-devel
+BuildRequires:	ffmpeg-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
