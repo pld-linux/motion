@@ -1,15 +1,17 @@
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.0.5
-Release:	0.1
+Version:	3.0.6
+Release:	1
 Group:		Applications/Graphics
 License:	GPL
-Source0:	http://motion.sourceforge.net/download/%{name}-%{version}.tar.bz2
-# Source0-md5:	3c1d19f456468fb310282e6c41454895
-Patch0:		%{name}-wrongincludepath.patch.bz2 
+Source0:	http://motion.sourceforge.net/download/%{name}-%{version}.tar.gz
+# Source0-md5:	aa1ce10036ef34b1bd3c42d37831b54b
+Patch0:		%{name}-wrongincludepath.patch.bz2
+Patch1:		%{name}-ffmpeg.patch
 URL:		http://motion.technolust.cx/
 BuildRequires:	autoconf
+BuildRequires:	curl-devel
 BuildRequires:  ffmpeg-devel
 BuildRequires:  libjpeg-devel
 BuildRequires:  mysql-devel
@@ -31,10 +33,13 @@ tylko interesuj±ce obrazy.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
+%{__aclocal}
 %{__autoconf}
-%configure
+%configure \
+	--with-libavcodec=%{_libdir}
 %{__make}
 
 %install
