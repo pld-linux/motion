@@ -11,6 +11,7 @@ Patch0:		%{name}-wrongincludepath.patch.bz2
 Patch1:		%{name}-ffmpeg.patch
 URL:		http://motion.sourceforge.net/
 BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	ffmpeg-devel >= 0.4.8
 BuildRequires:	libjpeg-devel
