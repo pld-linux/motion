@@ -7,7 +7,6 @@ Group:		Applications/Graphics
 License:	GPL
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 # Source0-md5:	81d6498777c83bce1f221926f849c4de
-# Source0-size:	229793
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome/
 BuildRequires:	autoconf
 BuildRequires:	automake
