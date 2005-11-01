@@ -7,21 +7,19 @@
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.1.19
-Release:	3
+Version:	3.2.3
+Release:	1
 Group:		Applications/Graphics
 License:	GPL
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	cff1c8c56eb6b6ef8a5928780ca79cfa
+# Source0-md5:	d58770be5196bc2722625a99b7ae4b12
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	curl-devel
 BuildRequires:	ffmpeg-devel >= 0.4.8
 BuildRequires:	libjpeg-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
-%{?with_xmlrpc:BuildRequires:	xmlrpc-c-devel}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -56,7 +54,8 @@ install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version
 install motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf 
 cp {motion-dist.conf,thread*,motion.init-RH}	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
-%makeinstall
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_datadir}/doc doc
 
@@ -67,7 +66,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html
 %attr(755,root,root) %{_bindir}/motion
-%attr(755,root,root) %{_bindir}/motion-control
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion.conf
 %{_datadir}/motion
 %{_mandir}/man1/*
