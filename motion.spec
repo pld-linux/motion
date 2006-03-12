@@ -1,3 +1,5 @@
+# TODO:
+# - init subpackage to run motion as daemon
 #
 # Conditional builds:
 %bcond_without	pgsql		# build PostgreSQL support
@@ -7,12 +9,12 @@
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.2.3
+Version:	3.2.5.1
 Release:	1
 Group:		Applications/Graphics
 License:	GPL
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	d58770be5196bc2722625a99b7ae4b12
+# Source0-md5:	2ea49b07582b70284699fb448d6137f7
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -51,13 +53,13 @@ tylko interesuj±ce obrazy.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}}
-install motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf 
-cp {motion-dist.conf,thread*,motion.init-RH}	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_datadir}/doc doc
+mv $RPM_BUILD_ROOT%{_sysconfdir}/motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf 
+cp {motion-dist.conf,thread*,motion.init-RH}	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
