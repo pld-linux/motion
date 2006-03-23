@@ -11,7 +11,7 @@
 . /etc/rc.d/init.d/functions
 
 # Initial values:
-motion=${MOTION-//usr/bin/motion}
+motion=${MOTION-/usr/bin/motion}
 STARTUP_OPTIONS=""
 PIDFILE=/var/run/motion.pid
 
@@ -24,10 +24,10 @@ case "$1" in
 	start)
 		if [ ! -f /var/lock/subsys/motion ]; then
 			msg_starting motion
-			daemon $motion ${STARTUP_OPTIONS}
+			daemon ${motion} ${STARTUP_OPTIONS}
 			RETVAL=$?
 			if [ $RETVAL -eq 0 ] ; then
-				echo `ps axf | grep -v grep | grep  $motion | head -n1 | awk '{print $1}'` > $PIDFILE
+				echo `ps axf | grep -v grep | grep ${motion} | head -n1 | awk '{print $1}'` > ${PIDFILE}
 				touch /var/lock/subsys/motion
 			fi
 		else
@@ -37,17 +37,15 @@ case "$1" in
 	stop)
 		if [ -f /var/lock/subsys/motion ]; then
 			msg_stopping motion
-			killproc motion
+			killproc --pidfile ${PIDFILE} motion
 			RETVAL=$?
-			if [ $RETVAL -eq 0 ] ; then
-				rm -f /var/lock/subsys/motion /var/run/motion.pid
-			fi
+			rm -f /var/lock/subsys/motion ${PIDFILE}
 		else
 			msg_not_running motion
 		fi
 		;;
 	status)
-		status $motion
+		status motion
 		RETVAL=$?
 		;;
 	restart|force-reload)
@@ -58,7 +56,7 @@ case "$1" in
 	reload)
 		if [ -f /var/lock/subsys/motion ]; then
 			msg_reloading motion
-			killproc motion -HUP
+			killproc --pidfile ${PIDFILE} motion -HUP
 			RETVAL=$?
 		else
 			msg_not_running motion >&2
