@@ -1,5 +1,5 @@
 # TODO:
-# - init subpackage to run motion as daemon
+# - init subpackage should have own user. Current solution isn't safe.
 #
 # Conditional builds:
 %bcond_without	pgsql		# build PostgreSQL support
@@ -10,11 +10,13 @@ Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.5.1
-Release:	1.1
+Release:	1.5
 Group:		Applications/Graphics
 License:	GPL
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
 # Source0-md5:	2ea49b07582b70284699fb448d6137f7
+Source1:	%{name}.init
+Source2:	%{name}.sysconfig
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -36,6 +38,19 @@ video4linux i/lib kamer (takich jak kamery sieciowe axis). Motion jest
 doskona³ym narzêdziem do dogl±dania swojej posiad³o¶ci, przechowuj±c
 tylko interesuj±ce obrazy.
 
+%package init
+Summary:        Init script for Motion
+Summary(pl):    Skrypt init dla systemu Motion
+Group:          Applications/System
+Requires(post,preun):   /sbin/chkconfig
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description init
+Init script for Motion.
+
+%description init -l pl
+Skrypt init dla systemu Motion.
+
 %prep
 %setup -q
 
@@ -52,16 +67,30 @@ tylko interesuj±ce obrazy.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir},/etc/motion}
+install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}} \
+	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,motion}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_datadir}/doc doc
-mv $RPM_BUILD_ROOT%{_sysconfdir}/motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf 
+mv $RPM_BUILD_ROOT%{_sysconfdir}/motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf
+
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post init
+/sbin/chkconfig --add motion
+%service motion restart
+
+%preun init
+if [ "$1" = "0" ]; then
+	%service motion stop
+	/sbin/chkconfig --del motion
+fi
 
 %files
 %defattr(644,root,root,755)
@@ -71,3 +100,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/motion
 %{_datadir}/motion
 %{_mandir}/man1/*
+
+%files init
+%defattr(644,root,root,755)
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
