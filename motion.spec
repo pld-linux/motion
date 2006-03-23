@@ -45,6 +45,7 @@ Summary(pl):	Skrypt init dla systemu Motion
 Group:		Applications/System
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
+Requires:	rc-scripts
 
 %description init
 Init script for Motion.
