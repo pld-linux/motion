@@ -1,5 +1,6 @@
 # TODO:
 # - init subpackage should have own user. Current solution isn't safe.
+# - change default configuration for existing directories
 #
 # Conditional builds:
 %bcond_without	pgsql		# build PostgreSQL support
