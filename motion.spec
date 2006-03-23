@@ -5,14 +5,14 @@
 %bcond_without	pgsql		# build PostgreSQL support
 %bcond_without	mysql		# build MySQL support
 %bcond_without	xmlrpc		# build XMLRPC support 
-# 
+#
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.5.1
 Release:	1.5
-Group:		Applications/Graphics
 License:	GPL
+Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
 # Source0-md5:	2ea49b07582b70284699fb448d6137f7
 Source1:	%{name}.init
@@ -24,6 +24,7 @@ BuildRequires:	ffmpeg-devel >= 0.4.8
 BuildRequires:	libjpeg-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -39,11 +40,11 @@ doskona³ym narzêdziem do dogl±dania swojej posiad³o¶ci, przechowuj±c
 tylko interesuj±ce obrazy.
 
 %package init
-Summary:        Init script for Motion
-Summary(pl):    Skrypt init dla systemu Motion
-Group:          Applications/System
-Requires(post,preun):   /sbin/chkconfig
-Requires:       %{name} = %{epoch}:%{version}-%{release}
+Summary:	Init script for Motion
+Summary(pl):	Skrypt init dla systemu Motion
+Group:		Applications/System
+Requires(post,preun):	/sbin/chkconfig
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description init
 Init script for Motion.
@@ -67,8 +68,8 @@ Skrypt init dla systemu Motion.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}} \
-	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,motion}
+install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}/motion} \
+	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -97,7 +98,7 @@ fi
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html *.conf motion.init-RH
 %attr(755,root,root) %{_bindir}/motion
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion.conf
-%dir /etc/motion
+%dir %{_sysconfdir}/motion
 %{_datadir}/motion
 %{_mandir}/man1/*
 
