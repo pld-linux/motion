@@ -1,84 +1,73 @@
-#!/bin/bash
+#!/bin/sh
 #
-# Startup script for the Motion Detection System 
+# Motion	This shell script takes care of starting and stopping
+# 		motion service.
 #
-# chkconfig: - 85 15
-# description: Motion Detection System.  It is used to detect \
-#              movement based on compare images.
-# processname: motion 
-# pidfile: /var/run/motion.pid
-# config: /etc/motion.conf
+# chkconfig:	345 85 15
+# description:	Motion Detection System.  It is used to detect \
+#		movement based on compare images.
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-
-
+# Initial values:
 motion=${MOTION-//usr/bin/motion}
-prog=motion
+STARTUP_OPTIONS=""
 PIDFILE=/var/run/motion.pid
+
+# Get service config
+[ -f /etc/sysconfig/motion ] && . /etc/sysconfig/motion
+
 RETVAL=0
-
-
-start() {
-	echo -n $"Starting $prog: "
-	daemon $motion 
-	RETVAL=$?
-	echo `ps axf | grep -v grep | grep  $motion | head -n1 | awk '{print $1}'` > $PIDFILE
-	echo
-	[ $RETVAL = 0 ] && touch /var/lock/subsys/motion
-	return $RETVAL
-}
-stop() {
-	echo -n $"Stopping $prog: "
-	killproc $motion
-	RETVAL=$?
-	echo
-	[ $RETVAL = 0 ] && rm -f /var/lock/subsys/motion /var/run/motion.pid
-}
-stopsafe() {
-	echo -n $"Stopping $prog: ( for restarting ) "
-	killproc $motion
-	RETVAL=$?
-	sleep 10s
-	echo
-	[ $RETVAL = 0 ] && rm -f /var/lock/subsys/motion /var/run/motion.pid
-}
-reload() {
-	echo -n $"Reloading $prog: "
-	killproc $motion -HUP
-	RETVAL=$?
-	echo
-}
-
 # See how we were called.
 case "$1" in
 	start)
-		start
+		if [ ! -f /var/lock/subsys/motion ]; then
+			msg_starting motion
+			daemon $motion ${STARTUP_OPTIONS}
+			RETVAL=$?
+			if [ $RETVAL -eq 0 ] ; then
+				echo `ps axf | grep -v grep | grep  $motion | head -n1 | awk '{print $1}'` > $PIDFILE
+				touch /var/lock/subsys/motion
+			fi
+		else
+			msg_already_running motion
+		fi
 		;;
 	stop)
-		stop
+		if [ -f /var/lock/subsys/motion ]; then
+			msg_stopping motion
+			killproc motion
+			RETVAL=$?
+			if [ $RETVAL -eq 0 ] ; then
+				rm -f /var/lock/subsys/motion /var/run/motion.pid
+			fi
+		else
+			msg_not_running motion
+		fi
 		;;
 	status)
 		status $motion
 		RETVAL=$?
 		;;
-	restart)
-		stopsafe
-		start
-		;;
-	condrestart)
-		if [ -f /var/run/motion.pid ] ; then
-			stop
-			start
-		fi
+	restart|force-reload)
+		$0 stop
+		$0 start
+		exit $?
 		;;
 	reload)
-		reload
+		if [ -f /var/lock/subsys/motion ]; then
+			msg_reloading motion
+			killproc motion -HUP
+			RETVAL=$?
+		else
+			msg_not_running motion >&2
+			exit 7
+		fi
 		;;
 	*)
-		echo $"Usage: $prog {start|stop|restart|condrestart|reload|status}"
-		exit 1
+		echo $"Usage: $prog {start|stop|restart|force-reload|reload|status}"
+		exit 3
 esac
 
 exit $RETVAL
