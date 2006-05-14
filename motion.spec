@@ -18,6 +18,7 @@ Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
 # Source0-md5:	71e6bd13fcca70372e9b7c7806d62b30
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
+Patch0:		%{name}-config.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -56,6 +57,7 @@ Skrypt init dla systemu Motion.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__aclocal}
@@ -78,7 +80,8 @@ $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_syscon
 	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_datadir}/doc doc
-mv $RPM_BUILD_ROOT%{_sysconfdir}/motion-dist.conf $RPM_BUILD_ROOT%{_sysconfdir}/motion.conf
+mv $RPM_BUILD_ROOT%{_sysconfdir}/motion-dist.conf \
+	$RPM_BUILD_ROOT%{_sysconfdir}/motion/motion.conf
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
@@ -100,8 +103,8 @@ fi
 %defattr(644,root,root,755)
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html *.conf motion.init-RH
 %attr(755,root,root) %{_bindir}/motion
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion.conf
 %dir %{_sysconfdir}/%{name}
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion/motion.conf
 %{_datadir}/motion
 %{_mandir}/man1/*
 
