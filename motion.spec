@@ -71,7 +71,7 @@ Skrypt init dla systemu Motion.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d \
-$RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}} \
+$RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}/%{name}} \
 	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
@@ -101,6 +101,7 @@ fi
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html *.conf motion.init-RH
 %attr(755,root,root) %{_bindir}/motion
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion.conf
+%dir %{_sysconfdir}/%{name}
 %{_datadir}/motion
 %{_mandir}/man1/*
 
