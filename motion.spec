@@ -10,12 +10,12 @@
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.2.5.1
-Release:	1.5
+Version:	3.2.6
+Release:	1
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	2ea49b07582b70284699fb448d6137f7
+# Source0-md5:	71e6bd13fcca70372e9b7c7806d62b30
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
@@ -70,7 +70,8 @@ Skrypt init dla systemu Motion.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}/motion} \
+install -d \
+$RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}} \
 	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
@@ -100,7 +101,6 @@ fi
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html *.conf motion.init-RH
 %attr(755,root,root) %{_bindir}/motion
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion.conf
-%dir %{_sysconfdir}/motion
 %{_datadir}/motion
 %{_mandir}/man1/*
 
