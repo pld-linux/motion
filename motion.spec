@@ -99,7 +99,7 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del motion
 fi
 
-%triggerpostun -- motion < 3.2.6
+%triggerpostun -- motion < 3.2.6-1
 if [ -e /etc/motion.conf.rpmsave ]; then
 	cp /etc/motion/motion.conf /etc/motion/motion.conf.rpmnew
 	cp /etc/motion.conf.rpmsave /etc/motion/motion.conf
