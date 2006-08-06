@@ -99,6 +99,12 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del motion
 fi
 
+%triggerpostun -- motion < 3.2.6
+if [ -e /etc/motion.conf.rpmsave ]; then
+	cp /etc/motion/motion.conf /etc/motion/motion.conf.rpmnew
+	cp /etc/motion.conf.rpmsave /etc/motion/motion.conf
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html *.conf motion.init-RH
