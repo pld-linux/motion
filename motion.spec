@@ -1,5 +1,4 @@
 # TODO:
-# - init subpackage should have own user. Current solution isn't safe.
 # - change default configuration for existing directories
 #
 # Conditional builds:
@@ -11,7 +10,7 @@ Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.6
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
@@ -27,6 +26,8 @@ BuildRequires:	libjpeg-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -46,8 +47,16 @@ Summary:	Init script for Motion
 Summary(pl):	Skrypt init dla systemu Motion
 Group:		Applications/System
 Requires(post,preun):	/sbin/chkconfig
+Requires(postun):       /usr/sbin/groupdel
+Requires(postun):       /usr/sbin/userdel
+Requires(pre):	 /bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Requires:	%{name} = %{version}-%{release}
 Requires:	rc-scripts
+Provides:	group(motion)
+Provides:	user(motion)
 
 %description init
 Init script for Motion.
@@ -89,6 +98,10 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre init
+%groupadd -g 177 motion
+%useradd -u 177 -g motion motion
+
 %post init
 /sbin/chkconfig --add motion
 %service motion restart
@@ -97,6 +110,12 @@ rm -rf $RPM_BUILD_ROOT
 if [ "$1" = "0" ]; then
 	%service motion stop
 	/sbin/chkconfig --del motion
+fi
+
+%postun init
+if [ "$1" = "0" ]; then
+        %userremove motion
+        %groupremove motion
 fi
 
 %triggerpostun -- motion < 3.2.6-1
