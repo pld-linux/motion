@@ -18,54 +18,61 @@ PIDFILE=/var/run/motion.pid
 # Get service config
 [ -f /etc/sysconfig/motion ] && . /etc/sysconfig/motion
 
+start() {
+	if [ ! -f /var/lock/subsys/motion ]; then
+		msg_starting motion
+		daemon --user motion ${motion} ${STARTUP_OPTIONS}
+		RETVAL=$?
+		if [ $RETVAL -eq 0 ] ; then
+			echo `ps axf | grep -v grep | grep ${motion} | head -n1 | awk '{print $1}'` > ${PIDFILE}
+			touch /var/lock/subsys/motion
+		fi
+	else
+		msg_already_running motion
+	fi
+}
+
+stop() {
+	if [ -f /var/lock/subsys/motion ]; then
+		msg_stopping motion
+		killproc --pidfile ${PIDFILE} motion
+		RETVAL=$?
+		rm -f /var/lock/subsys/motion ${PIDFILE}
+	else
+		msg_not_running motion
+	fi
+}
+
 RETVAL=0
 # See how we were called.
 case "$1" in
-	start)
-		if [ ! -f /var/lock/subsys/motion ]; then
-			msg_starting motion
-			daemon --user motion ${motion} ${STARTUP_OPTIONS}
-			RETVAL=$?
-			if [ $RETVAL -eq 0 ] ; then
-				echo `ps axf | grep -v grep | grep ${motion} | head -n1 | awk '{print $1}'` > ${PIDFILE}
-				touch /var/lock/subsys/motion
-			fi
-		else
-			msg_already_running motion
-		fi
-		;;
-	stop)
-		if [ -f /var/lock/subsys/motion ]; then
-			msg_stopping motion
-			killproc --pidfile ${PIDFILE} motion
-			RETVAL=$?
-			rm -f /var/lock/subsys/motion ${PIDFILE}
-		else
-			msg_not_running motion
-		fi
-		;;
-	status)
-		status motion
+start)
+	start
+	;;
+stop)
+	stop
+	;;
+status)
+	status motion
+	RETVAL=$?
+	;;
+restart|force-reload)
+	stop
+	start
+	;;
+reload)
+	if [ -f /var/lock/subsys/motion ]; then
+		msg_reloading motion
+		killproc --pidfile ${PIDFILE} motion -HUP
 		RETVAL=$?
-		;;
-	restart|force-reload)
-		$0 stop
-		$0 start
-		exit $?
-		;;
-	reload)
-		if [ -f /var/lock/subsys/motion ]; then
-			msg_reloading motion
-			killproc --pidfile ${PIDFILE} motion -HUP
-			RETVAL=$?
-		else
-			msg_not_running motion >&2
-			exit 7
-		fi
-		;;
-	*)
-		echo $"Usage: $prog {start|stop|restart|force-reload|reload|status}"
-		exit 3
+	else
+		msg_not_running motion
+		exit 7
+	fi
+	;;
+*)
+	echo $"Usage: $prog {start|stop|restart|force-reload|reload|status}"
+	exit 3
 esac
 
 exit $RETVAL
