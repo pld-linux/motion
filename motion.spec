@@ -9,19 +9,19 @@
 Summary:	Motion is a software motion detector
 Summary(pl):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.2.6
-Release:	2
+Version:	3.2.7
+Release:	1
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	71e6bd13fcca70372e9b7c7806d62b30
+# Source0-md5:	b4af6e10532fcdec89060bc61a27fc3a
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	ffmpeg-devel >= 0.4.8
+BuildRequires:	ffmpeg-devel >= 0.4.9-3.20060817
 BuildRequires:	libjpeg-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
@@ -47,9 +47,9 @@ Summary:	Init script for Motion
 Summary(pl):	Skrypt init dla systemu Motion
 Group:		Applications/System
 Requires(post,preun):	/sbin/chkconfig
-Requires(postun):       /usr/sbin/groupdel
-Requires(postun):       /usr/sbin/userdel
-Requires(pre):	 /bin/id
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
+Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
@@ -114,8 +114,8 @@ fi
 
 %postun init
 if [ "$1" = "0" ]; then
-        %userremove motion
-        %groupremove motion
+	%userremove motion
+	%groupremove motion
 fi
 
 %triggerpostun -- motion < 3.2.6-1
