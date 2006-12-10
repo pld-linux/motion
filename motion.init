@@ -71,7 +71,7 @@ reload)
 	fi
 	;;
 *)
-	echo $"Usage: $prog {start|stop|restart|force-reload|reload|status}"
+	msg_usage "$0 {start|stop|restart|force-reload|reload|status}"
 	exit 3
 esac
 
