@@ -24,7 +24,7 @@ start() {
 		daemon --user motion ${motion} ${STARTUP_OPTIONS}
 		RETVAL=$?
 		if [ $RETVAL -eq 0 ] ; then
-			echo `ps axf | awk "!/awk/ && /$motion/{print \$1; exit}"` > ${PIDFILE}
+			echo `ps axf | awk -vprog="$motion" '!/awk/ && $0 ~ prog {print $1; exit}'` > ${PIDFILE}
 			touch /var/lock/subsys/motion
 		fi
 	else
