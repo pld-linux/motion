@@ -7,7 +7,7 @@
 %bcond_without	xmlrpc		# build XMLRPC support 
 #
 Summary:	Motion is a software motion detector
-Summary(pl):	Motion - programowy wykrywacz ruchu
+Summary(pl.UTF-8):   Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.7
 Release:	2
@@ -36,15 +36,15 @@ devices and/or from webcams (such as the axis network cameras). Motion
 is the perfect tool for keeping an eye on your property keeping only
 those images that are interesting.
 
-%description -l pl
-Motion to programowy wykrywacz ruchu. Przechwytuje obrazy z urz±dzeñ
+%description -l pl.UTF-8
+Motion to programowy wykrywacz ruchu. Przechwytuje obrazy z urzÄ…dzeÅ„
 video4linux i/lib kamer (takich jak kamery sieciowe axis). Motion jest
-doskona³ym narzêdziem do dogl±dania swojej posiad³o¶ci, przechowuj±c
-tylko interesuj±ce obrazy.
+doskonaÅ‚ym narzÄ™dziem do doglÄ…dania swojej posiadÅ‚oÅ›ci, przechowujÄ…c
+tylko interesujÄ…ce obrazy.
 
 %package init
 Summary:	Init script for Motion
-Summary(pl):	Skrypt init dla systemu Motion
+Summary(pl.UTF-8):   Skrypt init dla systemu Motion
 Group:		Applications/System
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
@@ -61,7 +61,7 @@ Provides:	user(motion)
 %description init
 Init script for Motion.
 
-%description init -l pl
+%description init -l pl.UTF-8
 Skrypt init dla systemu Motion.
 
 %prep
