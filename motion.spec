@@ -7,7 +7,7 @@
 %bcond_without	xmlrpc		# build XMLRPC support 
 #
 Summary:	Motion is a software motion detector
-Summary(pl.UTF-8):   Motion - programowy wykrywacz ruchu
+Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.7
 Release:	2
@@ -44,7 +44,7 @@ tylko interesujące obrazy.
 
 %package init
 Summary:	Init script for Motion
-Summary(pl.UTF-8):   Skrypt init dla systemu Motion
+Summary(pl.UTF-8):	Skrypt init dla systemu Motion
 Group:		Applications/System
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
