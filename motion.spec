@@ -10,7 +10,7 @@ Summary:	Motion is a software motion detector
 Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.7
-Release:	2
+Release:	2.1
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
@@ -85,6 +85,8 @@ install -d \
 $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}/%{name}} \
 	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
+install -d $RPM_BUILD_ROOT/var/run/%{name}
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -132,6 +134,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion/motion.conf
 %{_datadir}/motion
 %{_mandir}/man1/*
+%attr(750,motion,motion) %dir /var/run/%{name}
 
 %files init
 %defattr(644,root,root,755)
