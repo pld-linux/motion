@@ -1,5 +1,0 @@
-# Monit startup configuration file
-
-# Try to define nice-level for running monit
-SERVICE_RUN_NICE_LEVEL="+5"
-
