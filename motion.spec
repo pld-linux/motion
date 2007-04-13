@@ -1,6 +1,3 @@
-# TODO:
-# - change default configuration for existing directories
-#
 # Conditional builds:
 %bcond_without	pgsql		# build PostgreSQL support
 %bcond_without	mysql		# build MySQL support
