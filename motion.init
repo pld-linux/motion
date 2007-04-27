@@ -13,7 +13,7 @@
 # Initial values:
 motion=${MOTION-/usr/bin/motion}
 STARTUP_OPTIONS=""
-PIDFILE=/var/run/motion.pid
+PIDFILE=/var/run/motion/motion.pid
 
 # Get service config
 [ -f /etc/sysconfig/motion ] && . /etc/sysconfig/motion
