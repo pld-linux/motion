@@ -1,3 +1,6 @@
+# TODO:
+# - fix as-needed
+#
 # Conditional builds:
 %bcond_without	pgsql		# build PostgreSQL support
 %bcond_without	mysql		# build MySQL support
@@ -7,7 +10,7 @@ Summary:	Motion is a software motion detector
 Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.9
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
@@ -20,10 +23,13 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	ffmpeg-devel >= 0.4.9-3.20060817
 BuildRequires:	libjpeg-devel
+BuildRequires:	mjpegtools-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		filterout_ld	-Wl,--as-needed
 
 %description
 Motion is a software motion detector. It grabs images from video4linux
