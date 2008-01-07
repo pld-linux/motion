@@ -1,5 +1,3 @@
-# TODO:
-# - fix as-needed
 #
 # Conditional builds:
 %bcond_without	pgsql		# build PostgreSQL support
@@ -18,6 +16,7 @@ Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
+Patch1:		%{name}-as_needed.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -28,8 +27,6 @@ BuildRequires:	mjpegtools-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		filterout_ld	-Wl,--as-needed
 
 %description
 Motion is a software motion detector. It grabs images from video4linux
@@ -68,6 +65,7 @@ Skrypt init dla systemu Motion.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__aclocal}
