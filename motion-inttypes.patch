@@ -1,0 +1,11 @@
+--- motion-3.2.9/Makefile.in~	2008-02-21 19:26:19.000000000 +0200
++++ motion-3.2.9/Makefile.in	2008-02-21 19:31:34.838584137 +0200
+@@ -32,7 +32,7 @@
+ # install.                                                                     #
+ ################################################################################
+ CFLAGS       = @CFLAGS@ -Wall -DVERSION=\"$(VERSION)\" -D_REENTRANT \
+-	       -Dsysconfdir=\"$(sysconfdir)/motion\"
++	       -Dsysconfdir=\"$(sysconfdir)/motion\" @DEFS@
+ LDFLAGS      = @LDFLAGS@
+ LIBS         = @LIBS@ 
+ VIDEO_OBJ    = @VIDEO@
