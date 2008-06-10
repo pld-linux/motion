@@ -1,11 +1,11 @@
---- motion-3.2.9/configure.in.orig	2008-01-07 11:16:15.354694153 +0100
-+++ motion-3.2.9/configure.in	2008-01-07 11:18:44.831890471 +0100
-@@ -277,7 +277,7 @@
-    LDFLAGS=$TEMP_LDFLAGS
- 
-    AC_CHECK_LIB(lavjpeg, decode_jpeg_raw,[
--                TEMP_LDFLAGS="$TEMP_LDFLAGS -lmjpegutils -llavjpeg"
-+                TEMP_LIBS="$TEMP_LIBS -lmjpegutils -llavjpeg"
-                 MJPEG_SUPPORT="yes"
-                 TEMP_CFLAGS="$TEMP_CFLAGS -DMJPEGT"
+--- motion-3.2.10/configure.in.orig	2008-05-18 16:58:52.000000000 +0200
++++ motion-3.2.10/configure.in	2008-06-10 19:08:08.000000000 +0200
+@@ -303,7 +303,7 @@
+    LDFLAGS=$TEMP_LDFLAGS  
+ 	
+    AC_CHECK_LIB(lavjpeg, decode_jpeg_raw,[ 
+-		TEMP_LDFLAGS="$TEMP_LDFLAGS -lmjpegutils -llavjpeg"
++		TEMP_LIBS="$TEMP_LIBS -lmjpegutils -llavjpeg"
+ 		MJPEG_SUPPORT="yes"
+ 		TEMP_CFLAGS="$TEMP_CFLAGS -DMJPEGT"
                   ], , -lmjpegutils)
