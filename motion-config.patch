@@ -5,7 +5,7 @@
  ################################################################################
  CFLAGS       = @CFLAGS@ -Wall -DVERSION=\"@PACKAGE_VERSION@\"  \
 -	       -Dsysconfdir=\"$(sysconfdir)\" -Ddocdir=\"$(docdir)\"
-+	       -Dsysconfdir=\"$(sysconfdir)\motion\" -Ddocdir=\"$(docdir)\motion\"
++	       -Dsysconfdir=\"$(sysconfdir)/motion\" -Ddocdir=\"$(docdir)/motion\"
  LDFLAGS      = @LDFLAGS@
  LIBS         = @LIBS@ 
  VIDEO_OBJ    = @VIDEO@
