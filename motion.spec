@@ -12,7 +12,7 @@ Release:	1
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	6003011b126c9b17e23e085e7fba6536
+# Source0-md5:	8bbdfb794b8e55f0a7085c348381baa5
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
