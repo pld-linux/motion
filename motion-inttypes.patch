@@ -4,8 +4,8 @@
  # install.                                                                     #
  ################################################################################
  CFLAGS       = @CFLAGS@ -Wall -DVERSION=\"@PACKAGE_VERSION@\"  \
--	       -Dsysconfdir=\"$(sysconfdir)\motion\" -Ddocdir=\"$(docdir)\motion\"
-+	       -Dsysconfdir=\"$(sysconfdir)\motion\" -Ddocdir=\"$(docdir)\motion\" @DEFS@
+-	       -Dsysconfdir=\"$(sysconfdir)/motion\" -Ddocdir=\"$(docdir)/motion\"
++	       -Dsysconfdir=\"$(sysconfdir)/motion\" -Ddocdir=\"$(docdir)/motion\" @DEFS@
  LDFLAGS      = @LDFLAGS@
  LIBS         = @LIBS@ 
  VIDEO_OBJ    = @VIDEO@
