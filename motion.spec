@@ -7,17 +7,15 @@
 Summary:	Motion is a software motion detector
 Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.2.10.1
+Version:	3.2.11
 Release:	1
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	5ffdc958313345c69d3e0d5ec5c013cd
+# Source0-md5:	3a26c00f3250eacf6fa93c7a7e0249d9
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
-Patch1:		%{name}-as_needed.patch
-Patch2:		%{name}-inttypes.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -66,14 +64,11 @@ Skrypt init dla systemu Motion.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
 %{__aclocal}
 %{__autoconf}
 %configure \
-	--with-libavcodec=%{_libdir} \
 	--without-optimizecpu \
 	%{?with_mysql:--with-mysql} \
 	%{?with_pgsql:--with-pgsql}
