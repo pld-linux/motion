@@ -1,11 +1,12 @@
---- motion-3.2.10/Makefile.in.orig	2008-06-10 19:01:53.000000000 +0200
-+++ motion-3.2.10/Makefile.in	2008-06-10 19:01:57.000000000 +0200
-@@ -31,7 +31,7 @@
+diff -burNp motion-3.2.11/Makefile.in motion-3.2.11-new/Makefile.in
+--- motion-3.2.11/Makefile.in	2008-09-22 01:20:58.000000000 +0200
++++ motion-3.2.11-new/Makefile.in	2008-10-05 20:56:06.874207953 +0200
+@@ -30,7 +30,7 @@ examplesdir = $(datadir)/@PACKAGE_NAME@-
+ # These variables contain compiler flags, object files to build and files to   #
  # install.                                                                     #
  ################################################################################
- CFLAGS       = @CFLAGS@ -Wall -DVERSION=\"@PACKAGE_VERSION@\"  \
--	       -Dsysconfdir=\"$(sysconfdir)\" -Ddocdir=\"$(docdir)\"
-+	       -Dsysconfdir=\"$(sysconfdir)/motion\" -Ddocdir=\"$(docdir)/motion\"
+-CFLAGS       = @CFLAGS@ -Wall -DVERSION=\"@PACKAGE_VERSION@\" -Dsysconfdir=\"$(sysconfdir)\" 
++CFLAGS       = @CFLAGS@ -Wall -DVERSION=\"@PACKAGE_VERSION@\" -Dsysconfdir=\"$(sysconfdir)/motion\" 
  LDFLAGS      = @LDFLAGS@
  LIBS         = @LIBS@ 
  VIDEO_OBJ    = @VIDEO@
