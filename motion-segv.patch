@@ -1,0 +1,11 @@
+--- a/motion.c
++++ b/motion.c
+@@ -2775,7 +2775,7 @@
+ #if (defined(BSD))
+         strerror_r(errno_save, buf + n, sizeof(buf) - n);    /* 2 for the ': ' */
+ #else
+-        strcat(buf, strerror_r(errno_save, msg_buf, sizeof(msg_buf)));
++        strncat(buf, sizeof(buf) - n, strerror_r(errno_save, msg_buf, sizeof(msg_buf)));
+ #endif
+     }
+     /* If 'level' is not negative, send the message to the syslog */

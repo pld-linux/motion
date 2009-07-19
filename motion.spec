@@ -8,7 +8,7 @@ Summary:	Motion is a software motion detector
 Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
 Version:	3.2.11
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
@@ -16,6 +16,8 @@ Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
+Patch1:		%{name}-ftbfs.patch
+PAtch2:		%{name}-segv.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -64,6 +66,8 @@ Skrypt init dla systemu Motion.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %{__aclocal}
@@ -77,11 +81,11 @@ Skrypt init dla systemu Motion.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d \
-$RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}/%{name}} \
-	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
-
-install -d $RPM_BUILD_ROOT/var/run/%{name}
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name} \
+	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version} \
+	$RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
+	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
+	$RPM_BUILD_ROOT/var/run/%{name}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
