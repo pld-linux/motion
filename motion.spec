@@ -17,7 +17,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-ftbfs.patch
-PAtch2:		%{name}-segv.patch
+Patch2:		%{name}-segv.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
