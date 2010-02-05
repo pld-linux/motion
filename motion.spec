@@ -68,6 +68,7 @@ Skrypt init dla systemu Motion.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%{__sed} -i -e 's/jpeg_mem_dest/my_jpeg_mem_dest/g' picture.c
 
 %build
 %{__aclocal}
