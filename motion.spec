@@ -23,7 +23,6 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	ffmpeg-devel >= 0.4.9-3.20060817
 BuildRequires:	libjpeg-devel
-BuildRequires:	mjpegtools-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
