@@ -7,22 +7,20 @@
 Summary:	Motion is a software motion detector
 Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.2.9
-Release:	4
+Version:	3.2.12
+Release:	1
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	6003011b126c9b17e23e085e7fba6536
+# Source0-md5:	1ba0065ed50509aaffb171594c689f46
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
-Patch1:		%{name}-as_needed.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	ffmpeg-devel >= 0.4.9-3.20060817
 BuildRequires:	libjpeg-devel
-BuildRequires:	mjpegtools-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -65,13 +63,12 @@ Skrypt init dla systemu Motion.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+%{__sed} -i -e 's/jpeg_mem_dest/my_jpeg_mem_dest/g' picture.c
 
 %build
 %{__aclocal}
 %{__autoconf}
 %configure \
-	--with-libavcodec=%{_libdir} \
 	--without-optimizecpu \
 	%{?with_mysql:--with-mysql} \
 	%{?with_pgsql:--with-pgsql}
@@ -80,11 +77,11 @@ Skrypt init dla systemu Motion.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d \
-$RPM_BUILD_ROOT{%{_datadir}/%{name},%{_examplesdir}/%{name}-%{version},%{_sysconfdir}/%{name}} \
-	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
-
-install -d $RPM_BUILD_ROOT/var/run/%{name}
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name} \
+	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version} \
+	$RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
+	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
+	$RPM_BUILD_ROOT/var/run/%{name}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
