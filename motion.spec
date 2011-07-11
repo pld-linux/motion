@@ -11,15 +11,16 @@ Version:	3.2.12
 Release:	4
 License:	GPL
 Group:		Applications/Graphics
-Source0:	http://dl.sourceforge.net/motion/%{name}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/motion/%{name}-%{version}.tar.gz
 # Source0-md5:	1ba0065ed50509aaffb171594c689f46
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
+Patch1:		%{name}-ffmpeg.patch
 URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	ffmpeg-devel >= 0.4.9-3.20060817
+BuildRequires:	ffmpeg-devel >= 0.7.1
 BuildRequires:	libjpeg-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
@@ -63,6 +64,7 @@ Skrypt init dla systemu Motion.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 %{__sed} -i -e 's/jpeg_mem_dest/my_jpeg_mem_dest/g' picture.c
 
 %build
