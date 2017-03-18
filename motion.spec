@@ -2,28 +2,30 @@
 # Conditional builds:
 %bcond_without	pgsql		# build PostgreSQL support
 %bcond_without	mysql		# build MySQL support
+%bcond_without	sqlite		# build SQLite support
 %bcond_without	xmlrpc		# build XMLRPC support 
+%bcond_without	v4l		# build v4l support 
 #
 Summary:	Motion is a software motion detector
 Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	3.2.12
-Release:	4
+Version:	4.0.1
+Release:	1
 License:	GPL
 Group:		Applications/Graphics
-Source0:	http://downloads.sourceforge.net/motion/%{name}-%{version}.tar.gz
-# Source0-md5:	1ba0065ed50509aaffb171594c689f46
+Source0:	https://github.com/Motion-Project/motion/archive/release-%{version}.tar.gz
+# Source0-md5:	5c87f90c4118d8cf0fb14700db69118f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-Patch0:		%{name}-config.patch
-Patch1:		%{name}-ffmpeg.patch
-URL:		http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
+Source3:	%{name}.tmpfiles
+URL:		https://motion-project.github.io/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	ffmpeg-devel >= 0.7.1
 BuildRequires:	libjpeg-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+%{?with_sqlite:BuildRequires:	sqlite3-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -62,18 +64,16 @@ Init script for Motion.
 Skrypt init dla systemu Motion.
 
 %prep
-%setup -q
-%patch0 -p1
-%patch1 -p1
-%{__sed} -i -e 's/jpeg_mem_dest/my_jpeg_mem_dest/g' picture.c
+%setup -q  -n motion-release-%{version}
 
 %build
-%{__aclocal}
-%{__autoconf}
+autoreconf -fvi
 %configure \
 	--without-optimizecpu \
-	%{?with_mysql:--with-mysql} \
-	%{?with_pgsql:--with-pgsql}
+	%{?!with_mysql:--without-mysql} \
+	%{?!with_pgsql:--without-pgsql} \
+	%{?!with_sqlite:--without-pgsql} \
+	%{?!with_v4l:--without-v4l}
 
 %{__make}
 
@@ -83,17 +83,21 @@ install -d $RPM_BUILD_ROOT%{_datadir}/%{name} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
 	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
-	$RPM_BUILD_ROOT/var/run/%{name}
+	$RPM_BUILD_ROOT/var/run/%{name} \
+	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_datadir}/doc doc
-mv $RPM_BUILD_ROOT%{_sysconfdir}/motion-dist.conf \
+mv $RPM_BUILD_ROOT%{_sysconfdir}/motion/motion-dist.conf \
 	$RPM_BUILD_ROOT%{_sysconfdir}/motion/motion.conf
+
+rm -f $RPM_BUILD_ROOT%{_sysconfdir}/motion/camera*
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
+install %{SOURCE3} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -128,10 +132,11 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG CREDITS FAQ README README.axis_2100 motion_guide.html *.conf motion.init-RH
+%doc CHANGELOG CREDITS FAQ README.md motion_guide.html *.conf
 %attr(755,root,root) %{_bindir}/motion
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion/motion.conf
+/usr/lib/tmpfiles.d/%{name}.conf
 %{_datadir}/motion
 %{_mandir}/man1/*
 %attr(750,motion,motion) %dir /var/run/%{name}
