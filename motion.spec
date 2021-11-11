@@ -9,12 +9,12 @@
 Summary:	Motion is a software motion detector
 Summary(pl.UTF-8):	Motion - programowy wykrywacz ruchu
 Name:		motion
-Version:	4.0.1
+Version:	4.4.0
 Release:	1
 License:	GPL
 Group:		Applications/Graphics
 Source0:	https://github.com/Motion-Project/motion/archive/release-%{version}.tar.gz
-# Source0-md5:	5c87f90c4118d8cf0fb14700db69118f
+# Source0-md5:	17f47d4880a122e93f19561dba639f3d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.tmpfiles
@@ -23,6 +23,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	ffmpeg-devel >= 0.7.1
 BuildRequires:	libjpeg-devel
+BuildRequires:	libmicrohttpd-devel
 %{?with_mysql:BuildRequires:    mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 %{?with_sqlite:BuildRequires:	sqlite3-devel}
@@ -132,12 +133,27 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG CREDITS FAQ README.md motion_guide.html *.conf
+%doc doc/CHANGELOG doc/CREDITS README.md doc/motion_guide.html
 %attr(755,root,root) %{_bindir}/motion
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/motion/motion.conf
 /usr/lib/tmpfiles.d/%{name}.conf
 %{_datadir}/motion
+%{_localedir}/da/LC_MESSAGES/motion.mo
+%{_localedir}/de/LC_MESSAGES/motion.mo
+%{_localedir}/es/LC_MESSAGES/motion.mo
+%{_localedir}/fi/LC_MESSAGES/motion.mo
+%{_localedir}/fr/LC_MESSAGES/motion.mo
+%{_localedir}/it/LC_MESSAGES/motion.mo
+%{_localedir}/ja/LC_MESSAGES/motion.mo
+%{_localedir}/ko/LC_MESSAGES/motion.mo
+%{_localedir}/li/LC_MESSAGES/motion.mo
+%{_localedir}/nl/LC_MESSAGES/motion.mo
+%{_localedir}/no/LC_MESSAGES/motion.mo
+%{_localedir}/pt/LC_MESSAGES/motion.mo
+%{_localedir}/sk/LC_MESSAGES/motion.mo
+%{_localedir}/sv/LC_MESSAGES/motion.mo
+%{_localedir}/zh/LC_MESSAGES/motion.mo
 %{_mandir}/man1/*
 %attr(750,motion,motion) %dir /var/run/%{name}
 
